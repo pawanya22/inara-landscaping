@@ -18,11 +18,11 @@
             --accent: #a5d6a7;
         }
         @font-face {
-                    font-family: 'Forestana';
-                    src: url('/FORESTANA.ttf') format('truetype');
-                    font-weight: normal;
-                    font-style: normal;
-                }
+            font-family: 'Forestana';
+            src: url('FORESTANA.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -42,41 +42,38 @@
         }
 
         /* --- INTRO LOADER --- */
-.intro-loader {
-    position: fixed;
-    inset: 0;
-    background: #05100a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-}
+        .intro-loader {
+            position: fixed;
+            inset: 0;
+            background: #05100a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
 
-.logo-anim {
-    position: relative;
-    text-align: center;
-}
+        .logo-anim {
+            position: relative;
+            text-align: center;
+        }
 
-.logo-anim img {
-    width: 300px;
-    border-radius: 200px;
-    opacity: 0;
-    transform: scale(0.8);
-}
+        .logo-anim img {
+            width: 300px;
+            border-radius: 200px;
+            opacity: 0;
+            transform: scale(0.8);
+        }
 
-/* growing leaf effect */
-.leaf {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 2px solid rgba(165,214,167,0.3);
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) scale(0);
-}
-
-        
+        .leaf {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid rgba(165,214,167,0.3);
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+        }
 
         /* --- PARALLAX BACKGROUND & THREE.JS --- */
         .main-bg {
@@ -223,10 +220,9 @@
             padding-top: 30vh;
             min-height: 100vh;
             display: grid;
-            grid-template-columns: 1fr 400px;
+            grid-template-columns: 1fr minmax(300px, 400px);
             gap: 4rem;
             align-items: start;
-            grid-template-columns: 1fr minmax(300px, 400px);
         }
 
         .hero-text h1 {
@@ -269,63 +265,32 @@
             padding: 2rem;
             text-align: center;
             position: relative;
-            overflow: visible; /* IMPORTANT */
+            overflow: visible;
         }
 
-        /* wrapper to control positioning */
         .hero-image-wrap {
             position: relative;
-            margin-top: -120px; /* pulls image outside card */
+            margin-top: -120px;
             margin-bottom: 1.5rem;
             display: flex;
             justify-content: center;
         }
 
-        /* floating image */
         .hero-image-wrap img {
             width: 260px;
             height: 260px;
             object-fit: cover;
             border-radius: 20px;
-
             transform: translateY(0) scale(1);
             transition: transform 0.5s ease;
-
             filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6));
         }
 
-        /* hover interaction */
         .hero-card:hover .hero-image-wrap img {
             transform: translateY(-10px) scale(1.03);
         }
 
-        .hero-image-wrap::before {
-            content: "";
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(165,214,167,0.25), transparent 70%);
-            filter: blur(30px);
-            z-index: -1;
-        }
-
-        @media (max-width: 768px) {
-    .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 2rem;
-    }
-
-    .hero-card {
-        margin: 0 auto;
-    }
-
-    .hero-image-wrap {
-        margin-top: -80px;
-    }
-}
-
-        /* --- GENERIC CARD STYLING (Services, Process, Testimonials) --- */
+        /* --- GENERIC CARD STYLING --- */
         .info-card {
             padding: 2.5rem 2rem;
             text-align: left;
@@ -399,102 +364,89 @@
             color: var(--text-main);
         }
 
-        /* --- PROCESS CURVE SECTION --- */
+        /* =========================
+           SYMMETRICAL PROJECT GRID (5 cards, first & last BIG, perfect rectangle)
+        ========================= */
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr 1fr 1.8fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
 
-.process-wrapper {
-    position: relative;
-    width: 100%;
-    height: 320px;
-    margin-top: 4rem;
-}
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
 
-.process-line {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
+        /* explicit placement — perfect rectangle 2 rows x 4 columns */
+        .project-card:nth-child(1) {
+            grid-column: 1 / 2;
+            grid-row: 1 / span 2;
+        }
+        .project-card:nth-child(2) {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+        }
+        .project-card:nth-child(3) {
+            grid-column: 3 / 4;
+            grid-row: 1 / 2;
+        }
+        .project-card:nth-child(4) {
+            grid-column: 2 / 4;
+            grid-row: 2 / 3;
+            aspect-ratio: 2 / 1; /* nice cinematic look */
+        }
+        .project-card:nth-child(5) {
+            grid-column: 4 / 5;
+            grid-row: 1 / span 2;
+        }
 
-.process-line path {
-    fill: none;
-    stroke: #a5d6a7;
-    stroke-width: 3;
-    stroke-linecap: round;
+        /* ensure big cards (first & last) have same size */
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
 
-    stroke-dasharray: 2000;
-    stroke-dashoffset: 2000;
-}
+        .project-card:hover img {
+            transform: scale(1.1);
+        }
 
-.process-steps {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
+        .project-card:hover {
+            transform: translateY(-8px);
+        }
 
-/* STEP STYLE */
-.process-step {
-    position: absolute;
-    width: 200px;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-}
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.75));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: 0.4s;
+        }
 
-.process-step .icon {
-    width: 50px;
-    height: 50px;
-    margin: 0 auto 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        .project-card:hover .overlay {
+            opacity: 1;
+        }
 
-    background: rgba(255,255,255,0.08);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
+        .overlay h3 {
+            font-family: 'Cormorant', serif;
+            font-size: 1.5rem;
+        }
 
-    backdrop-filter: blur(10px);
-}
-
-.process-step h4 {
-    font-family: 'Cormorant', serif;
-    margin-bottom: 0.5rem;
-}
-
-.process-step p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-
-@media (max-width: 900px) {
-
-    .process-wrapper {
-        height: auto;
-    }
-
-    .process-line {
-        display: none; /* hide curve on mobile */
-    }
-
-    .process-steps {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        align-items: center;
-    }
-
-    .process-step {
-        position: relative;
-        top: auto !important;
-        left: auto !important;
-        transform: none;
-        opacity: 1 !important;
-        width: 100%;
-        max-width: 300px;
-        padding: 1.5rem;
-        border-radius: 16px;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid var(--glass-border);
-    }
-}
+        .overlay p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
 
         /* --- CONTACT / CTA FORM --- */
         .form-group { margin-bottom: 1.5rem; }
@@ -558,6 +510,24 @@
             .check-list li { justify-content: center; }
             .footer-content { grid-template-columns: 1fr; text-align: center; }
             .stat-card { flex-direction: column; text-align: center; gap: 1rem; }
+            .project-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto;
+            }
+            /* mobile: big cards become full width, small cards rearrange */
+            .project-card:nth-child(1) {
+                grid-column: 1 / -1;
+                grid-row: auto;
+                aspect-ratio: 16/9;
+            }
+            .project-card:nth-child(2) { grid-column: 1; grid-row: auto; }
+            .project-card:nth-child(3) { grid-column: 2; grid-row: auto; }
+            .project-card:nth-child(4) { grid-column: 1; grid-row: auto; }
+            .project-card:nth-child(5) {
+                grid-column: 1 / -1;
+                grid-row: auto;
+                aspect-ratio: 16/9;
+            }
         }
 
         @media (max-width: 600px) {
@@ -565,17 +535,25 @@
             .section-header h2 { font-size: 2.5rem; }
             .nav-links { display: none; }
             .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            .project-card:nth-child(2),
+            .project-card:nth-child(3),
+            .project-card:nth-child(4) {
+                grid-column: 1 / -1;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="intro-loader">
-    <div class="logo-anim">
-        <img src="inara logo.png" alt="logo">
-        <div class="leaf"></div>
+        <div class="logo-anim">
+            <img src="inara logo.png" alt="logo">
+            <div class="leaf"></div>
+        </div>
     </div>
-</div>
 
     <div class="main-bg"></div>
     <div id="canvas-container"></div>
@@ -603,9 +581,8 @@
             
             <div class="hero-card glass-panel gs-reveal">
                 <div class="hero-image-wrap">
-                    <img src="download (5).jpg">
+                    <img src="download (5).jpg" alt="Garden preview">
                 </div>
-
                 <a href="#projects" class="btn btn-outline btn-full">Explore Our Work ↗</a>
                 <a href="#contact" class="btn btn-filled btn-full">Get Free Consultation</a>
             </div>
@@ -615,7 +592,7 @@
             <div class="gs-reveal">
                 <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">Rooted in Nature.<br>Designed for Life.</h2>
                 <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">We believe a landscape is more than plants and pathways — it’s a living environment that grows with you.</p>
-                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">Our approach blends natural beauty with thoughtful design to create outdoor spaces that feel effortless, functional, and deeply connected to nature. From small private gardens to large-scale landscapes, every detail is carefully shaped to bring balance, beauty, and lasting value.</p>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">Our approach blends natural beauty with thoughtful design to create outdoor spaces that feel effortless, functional, and deeply connected to nature.</p>
                 <p style="color: var(--accent); font-size: 1.2rem; font-style: italic; margin-top: 2rem;">We don’t just build landscapes. We create places where life happens.</p>
             </div>
             <div class="glass-panel gs-reveal" style="padding: 1rem;">
@@ -631,11 +608,11 @@
             <div class="grid-auto">
                 <div class="info-card glass-panel gs-reveal">
                     <h4>🌿 Garden Design</h4>
-                    <p>We create personalized garden concepts that reflect your lifestyle, blending aesthetics with natural flow to deliver spaces that feel alive and inviting.</p>
+                    <p>We create personalized garden concepts that reflect your lifestyle, blending aesthetics with natural flow.</p>
                 </div>
                 <div class="info-card glass-panel gs-reveal">
                     <h4>🌱 Landscape Architecture</h4>
-                    <p>From concept to structure, we design landscapes that are both visually stunning and technically precise, ensuring long-term beauty and sustainability.</p>
+                    <p>From concept to structure, we design landscapes that are both visually stunning and technically precise.</p>
                 </div>
                 <div class="info-card glass-panel gs-reveal">
                     <h4>💧 Irrigation Systems</h4>
@@ -643,20 +620,19 @@
                 </div>
                 <div class="info-card glass-panel gs-reveal">
                     <h4>🌙 Outdoor Lighting</h4>
-                    <p>Transform your space after sunset with lighting that highlights textures, creates mood, and enhances safety.</p>
+                    <p>Transform your space after sunset with lighting that highlights textures and creates mood.</p>
                 </div>
             </div>
         </section>
 
-        <section class="section grid-2" id="projects">
+        <section class="section grid-2">
             <div class="glass-panel gs-reveal" style="padding: 1rem; order: 2;">
                 <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 500px; object-fit: cover; border-radius: 16px;" alt="Outdoor patio project">
             </div>
             <div class="gs-reveal" style="order: 1;">
                 <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">From Empty Space to Living Paradise</h2>
                 <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">Every landscape has a story waiting to be told. What starts as an empty space becomes a vibrant environment filled with texture, depth, and life.</p>
-                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">Through careful planning and creative vision, we transform ordinary spaces into immersive outdoor experiences that feel natural, timeless, and uniquely yours.</p>
-                
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">Through careful planning and creative vision, we transform ordinary spaces into immersive outdoor experiences.</p>
                 <ul class="check-list">
                     <li>Custom-designed layouts</li>
                     <li>Sustainable material selection</li>
@@ -665,6 +641,53 @@
             </div>
         </section>
 
+        <!-- PROJECT GRID: 5 cards, first & last BIG (same size), perfect rectangle -->
+        <section class="section" id="projects">
+            <div class="section-header gs-reveal">
+                <h2>Our Featured Projects</h2>
+                <p>Each space we design tells a unique story of nature and lifestyle.</p>
+            </div>
+
+            <div class="project-grid">
+                <!-- BIG LEFT (Project 1) -->
+                <div class="project-card gs-reveal">
+                    <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80" alt="Tropical garden">
+                    <div class="overlay">
+                        <h3>Tropical Garden Retreat</h3>
+                        <p>Luxury backyard transformation</p>
+                    </div>
+                </div>
+                <!-- SMALL 1 -->
+                <div class="project-card gs-reveal">
+                    <img src="https://images.unsplash.com/photo-1593696140826-c58b021acf8b?auto=format&fit=crop&w=800&q=80" alt="Modern landscape">
+                    <div class="overlay">
+                        <h3>Modern Landscape</h3>
+                    </div>
+                </div>
+                <!-- SMALL 2 -->
+                <div class="project-card gs-reveal">
+                    <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&w=800&q=80" alt="Outdoor living">
+                    <div class="overlay">
+                        <h3>Outdoor Living</h3>
+                    </div>
+                </div>
+                <!-- SMALL 3 -->
+                <div class="project-card gs-reveal">
+                    <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1000&q=80" alt="Luxury pool garden">
+                    <div class="overlay">
+                        <h3>Luxury Pool Garden</h3>
+                    </div>
+                </div>
+                <!-- BIG RIGHT (Project 5) – same size as first -->
+                <div class="project-card gs-reveal">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80" alt="Zen garden">
+                    <div class="overlay">
+                        <h3>Zen Garden</h3>
+                        <p>Peaceful minimalist design</p>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <section class="section">
             <div class="section-header gs-reveal">
@@ -672,15 +695,15 @@
             </div>
             <div class="grid-auto">
                 <div class="info-card glass-panel gs-reveal" style="text-align: center; padding: 3rem 2rem;">
-                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"Our outdoor space feels like a private retreat now. Every detail is beautifully done — it’s beyond what we imagined."</p>
+                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"Our outdoor space feels like a private retreat now. Every detail is beautifully done."</p>
                     <div style="margin-top: 2rem; color: var(--accent);">★★★★★</div>
                 </div>
                 <div class="info-card glass-panel gs-reveal" style="text-align: center; padding: 3rem 2rem;">
-                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"They didn’t just design a garden, they created an experience. We spend more time outside than ever before."</p>
+                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"They didn’t just design a garden, they created an experience. We spend more time outside than ever."</p>
                     <div style="margin-top: 2rem; color: var(--accent);">★★★★★</div>
                 </div>
                 <div class="info-card glass-panel gs-reveal" style="text-align: center; padding: 3rem 2rem;">
-                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"The transformation was incredible. It feels natural, peaceful, and perfectly designed for our lifestyle."</p>
+                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"The transformation was incredible. It feels natural, peaceful, and perfectly designed."</p>
                     <div style="margin-top: 2rem; color: var(--accent);">★★★★★</div>
                 </div>
             </div>
@@ -698,7 +721,7 @@
                 </div>
                 <div class="stat-card glass-panel gs-reveal">
                     <h3>30%</h3>
-                    <p>Avg Water Savings with Smart Irrigation</p>
+                    <p>Avg Water Savings</p>
                 </div>
                 <div class="stat-card glass-panel gs-reveal">
                     <h3>100+</h3>
@@ -706,7 +729,7 @@
                 </div>
                 <div class="stat-card glass-panel gs-reveal">
                     <h3>100%</h3>
-                    <p>Sustainable Design Approach</p>
+                    <p>Sustainable Design</p>
                 </div>
             </div>
         </section>
@@ -731,7 +754,6 @@
                 <button type="submit" class="btn btn-filled" style="width: 100%;">Start Your Project</button>
             </form>
         </section>
-
     </main>
 
     <footer>
@@ -739,7 +761,7 @@
             <div class="footer-content">
                 <div class="footer-col">
                     <div class="logo" style="display: inline-flex; margin-bottom: 1rem; border: none; padding: 0;">Green<span>Space</span></div>
-                    <p>Creating landscapes that inspire, relax, and endure. Crafted by nature, perfected by design.</p>
+                    <p>Creating landscapes that inspire, relax, and endure.</p>
                 </div>
                 <div class="footer-col">
                     <h4>Quick Links</h4>
@@ -773,32 +795,31 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
     <script>
-
         // INTRO ANIMATION
-const tlIntro = gsap.timeline();
+        const tlIntro = gsap.timeline();
+        tlIntro
+        .to(".logo-anim img", {
+            opacity: 1,
+            scale: 1,
+            duration: 1,
+            ease: "power3.out"
+        })
+        .to(".leaf", {
+            scale: 1.8,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power2.out"
+        }, "-=0.5")
+        .to(".intro-loader", {
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.5,
+            onComplete: () => {
+                document.querySelector(".intro-loader").style.display = "none";
+            }
+        });
 
-tlIntro
-.to(".logo-anim img", {
-    opacity: 1,
-    scale: 1,
-    duration: 1,
-    ease: "power3.out"
-})
-.to(".leaf", {
-    scale: 1.8,
-    opacity: 0,
-    duration: 1.2,
-    ease: "power2.out"
-}, "-=0.5")
-.to(".intro-loader", {
-    opacity: 0,
-    duration: 0.8,
-    delay: 0.5,
-    onComplete: () => {
-        document.querySelector(".intro-loader").style.display = "none";
-    }
-});
-        // 1. Smooth Scrolling Setup (Lenis)
+        // Smooth Scrolling (Lenis)
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
@@ -810,10 +831,8 @@ tlIntro
         }
         requestAnimationFrame(raf);
 
-        // 2. GSAP Scroll Animations
+        // GSAP Scroll Animations
         gsap.registerPlugin(ScrollTrigger);
-        
-        // Connect Lenis with GSAP
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => { lenis.raf(time * 1000); });
 
@@ -829,7 +848,7 @@ tlIntro
             }
         });
 
-        // Reveal Elements on Scroll
+        // Reveal Elements
         const revealElements = document.querySelectorAll(".gs-reveal");
         revealElements.forEach((elem) => {
             gsap.fromTo(elem, 
@@ -848,7 +867,7 @@ tlIntro
             );
         });
 
-        // Floating animation for hero image
+        // Hero image float
         gsap.to(".hero-image-wrap img", {
             y: -15,
             rotation: 2,
@@ -856,10 +875,10 @@ tlIntro
             duration: 3,
             ease: "sine.inOut",
             repeat: -1,
-            yoyo: true           // up & down
+            yoyo: true
         });
 
-        // Navbar blurring effect on scroll
+        // Navbar effect
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -871,25 +890,20 @@ tlIntro
             }
         });
 
-        // 3. Three.js Particle Background (Subtle Dust/Spores)
+        // Three.js Particle Background
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
         const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 400; 
-        
+        const particlesCount = 400;
         const posArray = new Float32Array(particlesCount * 3);
         for(let i = 0; i < particlesCount * 3; i++) {
             posArray[i] = (Math.random() - 0.5) * 10;
         }
-        
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-        // Create a subtle green/white particle material
         const material = new THREE.PointsMaterial({
             size: 0.015,
             color: 0xa5d6a7,
@@ -897,39 +911,28 @@ tlIntro
             opacity: 0.6,
             blending: THREE.AdditiveBlending
         });
-
         const particlesMesh = new THREE.Points(particlesGeometry, material);
         scene.add(particlesMesh);
         camera.position.z = 3;
 
-        // Mouse interaction for particles
-        let mouseX = 0;
-        let mouseY = 0;
+        let mouseX = 0, mouseY = 0;
         document.addEventListener('mousemove', (event) => {
             mouseX = event.clientX / window.innerWidth - 0.5;
             mouseY = event.clientY / window.innerHeight - 0.5;
         });
 
         const clock = new THREE.Clock();
-
         function animateThreeJS() {
             requestAnimationFrame(animateThreeJS);
             const elapsedTime = clock.getElapsedTime();
-
-            // Slowly float particles upwards
             particlesMesh.rotation.y = elapsedTime * 0.05;
             particlesMesh.rotation.x = elapsedTime * 0.02;
-
-            // Slight mouse interaction
             particlesMesh.position.x += (mouseX * 0.5 - particlesMesh.position.x) * 0.05;
             particlesMesh.position.y += (-mouseY * 0.5 - particlesMesh.position.y) * 0.05;
-
             renderer.render(scene, camera);
         }
-        
         animateThreeJS();
 
-        // Handle Resize for Three.js
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
