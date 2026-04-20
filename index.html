@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Space | Landscaping & Garden Design</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --accent: #a5d6a7;
+        }
+        @font-face {
+                    font-family: 'Forestana';
+                    src: url('/FORESTANA.ttf') format('truetype');
+                    font-weight: normal;
+                    font-style: normal;
+                }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: #05100a;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Forestana', serif;
+            font-weight: normal;
+        }
+
+        /* --- INTRO LOADER --- */
+.intro-loader {
+    position: fixed;
+    inset: 0;
+    background: #05100a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.logo-anim {
+    position: relative;
+    text-align: center;
+}
+
+.logo-anim img {
+    width: 300px;
+    border-radius: 200px;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+/* growing leaf effect */
+.leaf {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid rgba(165,214,167,0.3);
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+}
+
+        
+
+        /* --- PARALLAX BACKGROUND & THREE.JS --- */
+        .main-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 110vh;
+            background: linear-gradient(rgba(5, 16, 10, 0.8), rgba(5, 16, 10, 0.95)), 
+                        url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80') center/cover;
+            z-index: -2;
+            will-change: transform;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- UTILITIES & LAYOUT --- */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5vw;
+        }
+
+        .section {
+            padding: 12vh 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .grid-auto {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5vw;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+        }
+        .logo span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .nav-links a:hover { opacity: 1; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--text-main);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); }
+        .btn-filled {
+            background: var(--text-main);
+            color: #05100a;
+            border: none;
+        }
+        .btn-filled:hover { background: var(--accent); }
+        .btn-full { width: 100%; margin-bottom: 1rem; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding-top: 30vh;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 4rem;
+            align-items: start;
+            grid-template-columns: 1fr minmax(300px, 400px);
+        }
+
+        .hero-text h1 {
+            font-size: 4.6rem;
+            line-height: 1.1;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #fff, #a5d6a7, #fff);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 5s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-text p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .hero-tagline {
+            font-family: 'Cormorant', serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 3rem;
+            display: block;
+        }
+
+        .hero-card {
+            top: 50px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: visible; /* IMPORTANT */
+        }
+
+        /* wrapper to control positioning */
+        .hero-image-wrap {
+            position: relative;
+            margin-top: -120px; /* pulls image outside card */
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* floating image */
+        .hero-image-wrap img {
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 20px;
+
+            transform: translateY(0) scale(1);
+            transition: transform 0.5s ease;
+
+            filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6));
+        }
+
+        /* hover interaction */
+        .hero-card:hover .hero-image-wrap img {
+            transform: translateY(-10px) scale(1.03);
+        }
+
+        .hero-image-wrap::before {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(165,214,167,0.25), transparent 70%);
+            filter: blur(30px);
+            z-index: -1;
+        }
+
+        @media (max-width: 768px) {
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .hero-card {
+        margin: 0 auto;
+    }
+
+    .hero-image-wrap {
+        margin-top: -80px;
+    }
+}
+
+        /* --- GENERIC CARD STYLING (Services, Process, Testimonials) --- */
+        .info-card {
+            padding: 2.5rem 2rem;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .info-card:hover { transform: translateY(-10px); }
+        .info-card h3.step-number {
+            font-size: 4rem;
+            opacity: 0.15;
+            margin-bottom: 1rem;
+            font-family: 'Cormorant', serif;
+            color: var(--accent);
+        }
+        .info-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-family: 'Cormorant', serif;
+            color: var(--text-main);
+        }
+        .info-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* --- FEATURE PROJECT LIST --- */
+        .check-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+        .check-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+        .check-list li::before {
+            content: '🌿';
+            font-size: 1.2rem;
+        }
+
+        /* --- ECO IMPACT / STATS --- */
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .stat-card {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .stat-card h3 {
+            font-size: 3rem;
+            color: var(--accent);
+            min-width: 120px;
+        }
+        .stat-card p {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
+
+        /* --- PROCESS CURVE SECTION --- */
+
+.process-wrapper {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    margin-top: 4rem;
+}
+
+.process-line {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.process-line path {
+    fill: none;
+    stroke: #a5d6a7;
+    stroke-width: 3;
+    stroke-linecap: round;
+
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+}
+
+.process-steps {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* STEP STYLE */
+.process-step {
+    position: absolute;
+    width: 200px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.process-step .icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+
+    backdrop-filter: blur(10px);
+}
+
+.process-step h4 {
+    font-family: 'Cormorant', serif;
+    margin-bottom: 0.5rem;
+}
+
+.process-step p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+
+    .process-wrapper {
+        height: auto;
+    }
+
+    .process-line {
+        display: none; /* hide curve on mobile */
+    }
+
+    .process-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+    }
+
+    .process-step {
+        position: relative;
+        top: auto !important;
+        left: auto !important;
+        transform: none;
+        opacity: 1 !important;
+        width: 100%;
+        max-width: 300px;
+        padding: 1.5rem;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--glass-border);
+    }
+}
+
+        /* --- CONTACT / CTA FORM --- */
+        .form-group { margin-bottom: 1.5rem; }
+        input, textarea {
+            width: 100%;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        textarea { height: 150px; resize: none; }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 3rem 5vw;
+            backdrop-filter: blur(10px);
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        .footer-col h4 {
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        .footer-col p, .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            line-height: 1.8;
+            display: block;
+            font-size: 0.95rem;
+        }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-bottom {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            .hero, .grid-2 { grid-template-columns: 1fr; text-align: center; }
+            .hero-text p { margin: 0 auto 1rem auto; }
+            .check-list li { justify-content: center; }
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .stat-card { flex-direction: column; text-align: center; gap: 1rem; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-text h1 { font-size: 3rem; }
+            .section-header h2 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="intro-loader">
+    <div class="logo-anim">
+        <img src="inara logo.png" alt="logo">
+        <div class="leaf"></div>
+    </div>
+</div>
+
+    <div class="main-bg"></div>
+    <div id="canvas-container"></div>
+
+    <nav id="navbar">
+        <div class="logo">Green<span>Space</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="logo" style="border: none;">Sri Lanka</div>
+    </nav>
+
+    <main class="container">
+        
+        <section class="hero" id="home">
+            <div class="hero-text gs-reveal">
+                <h1>Transforming Outdoor Spaces Into Living Art</h1>
+                <p>Transform your outdoor space into a timeless sanctuary where nature, design, and lifestyle exist in perfect harmony.</p>
+                <span class="hero-tagline">Crafted by nature. Perfected by design.</span>
+            </div>
+            
+            <div class="hero-card glass-panel gs-reveal">
+                <div class="hero-image-wrap">
+                    <img src="download (5).jpg">
+                </div>
+
+                <a href="#projects" class="btn btn-outline btn-full">Explore Our Work ↗</a>
+                <a href="#contact" class="btn btn-filled btn-full">Get Free Consultation</a>
+            </div>
+        </section>
+
+        <section class="section grid-2" id="about" style="margin-top: -10vh;">
+            <div class="gs-reveal">
+                <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">Rooted in Nature.<br>Designed for Life.</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">We believe a landscape is more than plants and pathways — it’s a living environment that grows with you.</p>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">Our approach blends natural beauty with thoughtful design to create outdoor spaces that feel effortless, functional, and deeply connected to nature. From small private gardens to large-scale landscapes, every detail is carefully shaped to bring balance, beauty, and lasting value.</p>
+                <p style="color: var(--accent); font-size: 1.2rem; font-style: italic; margin-top: 2rem;">We don’t just build landscapes. We create places where life happens.</p>
+            </div>
+            <div class="glass-panel gs-reveal" style="padding: 1rem;">
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 500px; object-fit: cover; border-radius: 16px;" alt="Garden Pathway">
+            </div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="section-header gs-reveal">
+                <h2>Designed Around Nature. Built Around You.</h2>
+                <p>Comprehensive landscaping solutions tailored to bring out the best in your outdoor spaces.</p>
+            </div>
+            <div class="grid-auto">
+                <div class="info-card glass-panel gs-reveal">
+                    <h4>🌿 Garden Design</h4>
+                    <p>We create personalized garden concepts that reflect your lifestyle, blending aesthetics with natural flow to deliver spaces that feel alive and inviting.</p>
+                </div>
+                <div class="info-card glass-panel gs-reveal">
+                    <h4>🌱 Landscape Architecture</h4>
+                    <p>From concept to structure, we design landscapes that are both visually stunning and technically precise, ensuring long-term beauty and sustainability.</p>
+                </div>
+                <div class="info-card glass-panel gs-reveal">
+                    <h4>💧 Irrigation Systems</h4>
+                    <p>Smart, efficient watering solutions designed to keep your landscape thriving while conserving resources.</p>
+                </div>
+                <div class="info-card glass-panel gs-reveal">
+                    <h4>🌙 Outdoor Lighting</h4>
+                    <p>Transform your space after sunset with lighting that highlights textures, creates mood, and enhances safety.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section grid-2" id="projects">
+            <div class="glass-panel gs-reveal" style="padding: 1rem; order: 2;">
+                <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 500px; object-fit: cover; border-radius: 16px;" alt="Outdoor patio project">
+            </div>
+            <div class="gs-reveal" style="order: 1;">
+                <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">From Empty Space to Living Paradise</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">Every landscape has a story waiting to be told. What starts as an empty space becomes a vibrant environment filled with texture, depth, and life.</p>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">Through careful planning and creative vision, we transform ordinary spaces into immersive outdoor experiences that feel natural, timeless, and uniquely yours.</p>
+                
+                <ul class="check-list">
+                    <li>Custom-designed layouts</li>
+                    <li>Sustainable material selection</li>
+                    <li>Seamless indoor-outdoor flow</li>
+                </ul>
+            </div>
+        </section>
+
+        
+        <section class="section">
+            <div class="section-header gs-reveal">
+                <h2>Spaces That Speak for Themselves</h2>
+            </div>
+            <div class="grid-auto">
+                <div class="info-card glass-panel gs-reveal" style="text-align: center; padding: 3rem 2rem;">
+                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"Our outdoor space feels like a private retreat now. Every detail is beautifully done — it’s beyond what we imagined."</p>
+                    <div style="margin-top: 2rem; color: var(--accent);">★★★★★</div>
+                </div>
+                <div class="info-card glass-panel gs-reveal" style="text-align: center; padding: 3rem 2rem;">
+                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"They didn’t just design a garden, they created an experience. We spend more time outside than ever before."</p>
+                    <div style="margin-top: 2rem; color: var(--accent);">★★★★★</div>
+                </div>
+                <div class="info-card glass-panel gs-reveal" style="text-align: center; padding: 3rem 2rem;">
+                    <p style="font-size: 1.2rem; font-style: italic; color: var(--text-main);">"The transformation was incredible. It feels natural, peaceful, and perfectly designed for our lifestyle."</p>
+                    <div style="margin-top: 2rem; color: var(--accent);">★★★★★</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section grid-2">
+            <div class="gs-reveal">
+                <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">Designing with Nature in Mind</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">We believe great landscapes should not only look beautiful but also respect and support the environment.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card glass-panel gs-reveal">
+                    <h3>500+</h3>
+                    <p>Trees & Plants Installed</p>
+                </div>
+                <div class="stat-card glass-panel gs-reveal">
+                    <h3>30%</h3>
+                    <p>Avg Water Savings with Smart Irrigation</p>
+                </div>
+                <div class="stat-card glass-panel gs-reveal">
+                    <h3>100+</h3>
+                    <p>Projects Completed</p>
+                </div>
+                <div class="stat-card glass-panel gs-reveal">
+                    <h3>100%</h3>
+                    <p>Sustainable Design Approach</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section grid-2" id="contact">
+            <div class="gs-reveal">
+                <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem;">Your Dream Landscape Starts Here</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 1rem;">Whether you're looking to transform a small garden or create a large outdoor retreat, we’re here to bring your vision to life.</p>
+                <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">Let’s design a space that feels natural, timeless, and truly yours.</p>
+            </div>
+            <form class="glass-panel gs-reveal" style="padding: 3rem;">
+                <h3 style="font-size: 2rem; margin-bottom: 2rem;">Send a Request</h3>
+                <div class="form-group">
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Tell us about your project..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-filled" style="width: 100%;">Start Your Project</button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <div class="logo" style="display: inline-flex; margin-bottom: 1rem; border: none; padding: 0;">Green<span>Space</span></div>
+                    <p>Creating landscapes that inspire, relax, and endure. Crafted by nature, perfected by design.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p>Email: hello@yourbrand.com</p>
+                    <p>Phone: +94 77 123 4567</p>
+                    <p>Location: Sri Lanka</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 GreenSpace Landscaping. All Rights Reserved.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#" style="color: var(--text-muted); text-decoration: none;">Instagram</a> |
+                    <a href="#" style="color: var(--text-muted); text-decoration: none;">Facebook</a> |
+                    <a href="#" style="color: var(--text-muted); text-decoration: none;">Pinterest</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+
+    <script>
+
+        // INTRO ANIMATION
+const tlIntro = gsap.timeline();
+
+tlIntro
+.to(".logo-anim img", {
+    opacity: 1,
+    scale: 1,
+    duration: 1,
+    ease: "power3.out"
+})
+.to(".leaf", {
+    scale: 1.8,
+    opacity: 0,
+    duration: 1.2,
+    ease: "power2.out"
+}, "-=0.5")
+.to(".intro-loader", {
+    opacity: 0,
+    duration: 0.8,
+    delay: 0.5,
+    onComplete: () => {
+        document.querySelector(".intro-loader").style.display = "none";
+    }
+});
+        // 1. Smooth Scrolling Setup (Lenis)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Connect Lenis with GSAP
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+
+        // Parallax Background
+        gsap.to(".main-bg", {
+            yPercent: 15,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: true
+            }
+        });
+
+        // Reveal Elements on Scroll
+        const revealElements = document.querySelectorAll(".gs-reveal");
+        revealElements.forEach((elem) => {
+            gsap.fromTo(elem, 
+                { autoAlpha: 0, y: 50 }, 
+                { 
+                    duration: 1, 
+                    autoAlpha: 1, 
+                    y: 0, 
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // Floating animation for hero image
+        gsap.to(".hero-image-wrap img", {
+            y: -15,
+            rotation: 2,
+            scale: 1.02,
+            duration: 3,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true           // up & down
+        });
+
+        // Navbar blurring effect on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(5, 16, 10, 0.9)';
+                navbar.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+            } else {
+                navbar.style.background = 'transparent';
+                navbar.style.borderBottom = '1px solid transparent';
+            }
+        });
+
+        // 3. Three.js Particle Background (Subtle Dust/Spores)
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 400; 
+        
+        const posArray = new Float32Array(particlesCount * 3);
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        // Create a subtle green/white particle material
+        const material = new THREE.PointsMaterial({
+            size: 0.015,
+            color: 0xa5d6a7,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, material);
+        scene.add(particlesMesh);
+        camera.position.z = 3;
+
+        // Mouse interaction for particles
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX / window.innerWidth - 0.5;
+            mouseY = event.clientY / window.innerHeight - 0.5;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animateThreeJS() {
+            requestAnimationFrame(animateThreeJS);
+            const elapsedTime = clock.getElapsedTime();
+
+            // Slowly float particles upwards
+            particlesMesh.rotation.y = elapsedTime * 0.05;
+            particlesMesh.rotation.x = elapsedTime * 0.02;
+
+            // Slight mouse interaction
+            particlesMesh.position.x += (mouseX * 0.5 - particlesMesh.position.x) * 0.05;
+            particlesMesh.position.y += (-mouseY * 0.5 - particlesMesh.position.y) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        
+        animateThreeJS();
+
+        // Handle Resize for Three.js
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
