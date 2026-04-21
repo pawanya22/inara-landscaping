@@ -58,11 +58,14 @@
         }
 
         .logo-anim img {
-            width: 300px;
-            border-radius: 200px;
-            opacity: 0;
-            transform: scale(0.8);
-        }
+    width: 320px;
+    max-width: 80vw;
+    height: auto;
+    opacity: 0;
+    transform: scale(0.8);
+    border-radius: 20px; /* soft edges instead of circle */
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+}
 
         .leaf {
             position: absolute;
@@ -85,8 +88,38 @@
             background: linear-gradient(rgba(5, 16, 10, 0.8), rgba(5, 16, 10, 0.95)), 
                         url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80') center/cover;
             z-index: -2;
-            will-change: transform;
+            overflow: hidden; /* ADD THIS */
         }
+
+        .main-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    /* blue gradient blob */
+    background: radial-gradient(
+        circle at 30% 40%,
+        rgba(0, 140, 255, 0.25),
+        transparent 40%
+    );
+
+    filter: blur(80px);
+    animation: blueFlow 12s ease-in-out infinite alternate;
+}
+
+/* animation movement */
+@keyframes blueFlow {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(-40px, 30px) scale(1.1);
+    }
+    100% {
+        transform: translate(40px, -30px) scale(1.2);
+    }
+}
 
         #canvas-container {
             position: fixed;
@@ -154,7 +187,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 2rem 5vw;
+            padding: 1.2rem 5vw; /* slightly reduced from 2rem */
             position: fixed;
             width: 100%;
             top: 0;
@@ -165,15 +198,22 @@
         }
         
         .logo {
-            font-size: 1.5rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: 1px solid var(--glass-border);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-        }
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* only apply border when it's NOT image logo */
+.logo:not(:has(img)) {
+    border: 1px solid var(--glass-border);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+}
+        .logo img {
+    height: clamp(50px, 5vw, 70px);
+    width: auto;
+    display: block;
+}
         .logo span { color: var(--accent); }
 
         .nav-links {
@@ -503,6 +543,9 @@
             font-size: 0.9rem;
         }
 
+        footer .logo img {
+    height: clamp(60px, 6vw, 90px);
+}
         /* --- MEDIA QUERIES --- */
         @media (max-width: 1024px) {
             .hero, .grid-2 { grid-template-columns: 1fr; text-align: center; }
@@ -559,7 +602,9 @@
     <div id="canvas-container"></div>
 
     <nav id="navbar">
-        <div class="logo">Green<span>Space</span></div>
+        <div class="logo">
+    <img src="inara logo.png" alt="logo">
+</div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
@@ -597,47 +642,6 @@
             </div>
             <div class="glass-panel gs-reveal" style="padding: 1rem;">
                 <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 500px; object-fit: cover; border-radius: 16px;" alt="Garden Pathway">
-            </div>
-        </section>
-
-        <section class="section" id="services">
-            <div class="section-header gs-reveal">
-                <h2>Designed Around Nature. Built Around You.</h2>
-                <p>Comprehensive landscaping solutions tailored to bring out the best in your outdoor spaces.</p>
-            </div>
-            <div class="grid-auto">
-                <div class="info-card glass-panel gs-reveal">
-                    <h4>🌿 Garden Design</h4>
-                    <p>We create personalized garden concepts that reflect your lifestyle, blending aesthetics with natural flow.</p>
-                </div>
-                <div class="info-card glass-panel gs-reveal">
-                    <h4>🌱 Landscape Architecture</h4>
-                    <p>From concept to structure, we design landscapes that are both visually stunning and technically precise.</p>
-                </div>
-                <div class="info-card glass-panel gs-reveal">
-                    <h4>💧 Irrigation Systems</h4>
-                    <p>Smart, efficient watering solutions designed to keep your landscape thriving while conserving resources.</p>
-                </div>
-                <div class="info-card glass-panel gs-reveal">
-                    <h4>🌙 Outdoor Lighting</h4>
-                    <p>Transform your space after sunset with lighting that highlights textures and creates mood.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section grid-2">
-            <div class="glass-panel gs-reveal" style="padding: 1rem; order: 2;">
-                <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 500px; object-fit: cover; border-radius: 16px;" alt="Outdoor patio project">
-            </div>
-            <div class="gs-reveal" style="order: 1;">
-                <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">From Empty Space to Living Paradise</h2>
-                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">Every landscape has a story waiting to be told. What starts as an empty space becomes a vibrant environment filled with texture, depth, and life.</p>
-                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">Through careful planning and creative vision, we transform ordinary spaces into immersive outdoor experiences.</p>
-                <ul class="check-list">
-                    <li>Custom-designed layouts</li>
-                    <li>Sustainable material selection</li>
-                    <li>Seamless indoor-outdoor flow</li>
-                </ul>
             </div>
         </section>
 
@@ -686,6 +690,47 @@
                         <p>Peaceful minimalist design</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="section-header gs-reveal">
+                <h2>Designed Around Nature. Built Around You.</h2>
+                <p>Comprehensive landscaping solutions tailored to bring out the best in your outdoor spaces.</p>
+            </div>
+            <div class="grid-auto">
+                <div class="info-card glass-panel gs-reveal">
+                    <h4>🌿 Garden Design</h4>
+                    <p>We create personalized garden concepts that reflect your lifestyle, blending aesthetics with natural flow.</p>
+                </div>
+                <div class="info-card glass-panel gs-reveal">
+                    <h4>🌱 Landscape Architecture</h4>
+                    <p>From concept to structure, we design landscapes that are both visually stunning and technically precise.</p>
+                </div>
+                <div class="info-card glass-panel gs-reveal">
+                    <h4>💧 Irrigation Systems</h4>
+                    <p>Smart, efficient watering solutions designed to keep your landscape thriving while conserving resources.</p>
+                </div>
+                <div class="info-card glass-panel gs-reveal">
+                    <h4>🌙 Outdoor Lighting</h4>
+                    <p>Transform your space after sunset with lighting that highlights textures and creates mood.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section grid-2">
+            <div class="glass-panel gs-reveal" style="padding: 1rem; order: 2;">
+                <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 500px; object-fit: cover; border-radius: 16px;" alt="Outdoor patio project">
+            </div>
+            <div class="gs-reveal" style="order: 1;">
+                <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">From Empty Space to Living Paradise</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">Every landscape has a story waiting to be told. What starts as an empty space becomes a vibrant environment filled with texture, depth, and life.</p>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">Through careful planning and creative vision, we transform ordinary spaces into immersive outdoor experiences.</p>
+                <ul class="check-list">
+                    <li>Custom-designed layouts</li>
+                    <li>Sustainable material selection</li>
+                    <li>Seamless indoor-outdoor flow</li>
+                </ul>
             </div>
         </section>
         
@@ -760,7 +805,9 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-col">
-                    <div class="logo" style="display: inline-flex; margin-bottom: 1rem; border: none; padding: 0;">Green<span>Space</span></div>
+                    <div class="logo" style="border: none; padding: 0;">
+    <img src="inara logo.png" alt="logo">
+</div>
                     <p>Creating landscapes that inspire, relax, and endure.</p>
                 </div>
                 <div class="footer-col">
