@@ -7,7 +7,6 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -18,12 +17,12 @@
             --accent: #a5d6a7;
         }
         @font-face {
-            font-family: 'Forestana';
-            src: url('FORESTANA.ttf') format('truetype');
+            font-family: 'Queen Temoz Trial';
+            src: url('Queen\ Temoz\ Trial.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
-        * {
+                * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -36,9 +35,8 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3, .serif {
-            font-family: 'Forestana', serif;
-            font-weight: normal;
+        h1, h2, h3 {
+            font-family: 'Queen Temoz Trial', serif;
         }
 
         /* --- INTRO LOADER --- */
@@ -178,7 +176,7 @@
 
         .grid-auto {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
         }
 
@@ -587,6 +585,18 @@
                 grid-column: 1 / -1;
             }
         }
+
+        @media (max-width: 1024px) {
+    .grid-auto {
+        grid-template-columns: repeat(2, 1fr); /* 2 per row on tablet */
+    }
+}
+
+@media (max-width: 600px) {
+    .grid-auto {
+        grid-template-columns: 1fr; /* 1 per row on mobile */
+    }
+}
     </style>
 </head>
 <body>
@@ -621,7 +631,7 @@
             <div class="hero-text gs-reveal">
                 <h1>Transforming Outdoor Spaces Into Living Art</h1>
                 <p>Transform your outdoor space into a timeless sanctuary where nature, design, and lifestyle exist in perfect harmony.</p>
-                <span class="hero-tagline">Crafted by nature. Perfected by design.</span>
+                <span class="hero-tagline">"Together, let's build a greener future!"</span>
             </div>
             
             <div class="hero-card glass-panel gs-reveal">
@@ -635,7 +645,7 @@
 
         <section class="section grid-2" id="about" style="margin-top: -10vh;">
             <div class="gs-reveal">
-                <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">Rooted in Nature.<br>Designed for Life.</h2>
+                <h2 style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2;">Rooted in Nature<br>Designed for Life</h2>
                 <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">We believe a landscape is more than plants and pathways — it’s a living environment that grows with you.</p>
                 <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">Our approach blends natural beauty with thoughtful design to create outdoor spaces that feel effortless, functional, and deeply connected to nature.</p>
                 <p style="color: var(--accent); font-size: 1.2rem; font-style: italic; margin-top: 2rem;">We don’t just build landscapes. We create places where life happens.</p>
@@ -693,30 +703,46 @@
             </div>
         </section>
 
-        <section class="section" id="services">
-            <div class="section-header gs-reveal">
-                <h2>Designed Around Nature. Built Around You.</h2>
-                <p>Comprehensive landscaping solutions tailored to bring out the best in your outdoor spaces.</p>
-            </div>
-            <div class="grid-auto">
-                <div class="info-card glass-panel gs-reveal">
-                    <h4>🌿 Garden Design</h4>
-                    <p>We create personalized garden concepts that reflect your lifestyle, blending aesthetics with natural flow.</p>
-                </div>
-                <div class="info-card glass-panel gs-reveal">
-                    <h4>🌱 Landscape Architecture</h4>
-                    <p>From concept to structure, we design landscapes that are both visually stunning and technically precise.</p>
-                </div>
-                <div class="info-card glass-panel gs-reveal">
-                    <h4>💧 Irrigation Systems</h4>
-                    <p>Smart, efficient watering solutions designed to keep your landscape thriving while conserving resources.</p>
-                </div>
-                <div class="info-card glass-panel gs-reveal">
-                    <h4>🌙 Outdoor Lighting</h4>
-                    <p>Transform your space after sunset with lighting that highlights textures and creates mood.</p>
-                </div>
-            </div>
-        </section>
+        <section class="section" id="services"> 
+    <div class="section-header gs-reveal">
+        <h2>Expert Solutions for Every Outdoor Need</h2>
+        <p>We offer a wide range of professional landscaping and maintenance services, carefully designed to enhance beauty, functionality, and long-term sustainability of your outdoor spaces.</p>
+    </div>
+
+    <div class="grid-auto">
+        
+        <div class="info-card glass-panel gs-reveal">
+            <h4>🌱 Trufing</h4>
+            <p>Professional turfing services to create lush, green lawns that elevate the look and feel of any outdoor environment.</p>
+        </div>
+
+        <div class="info-card glass-panel gs-reveal">
+            <h4>🌳 Rootballing</h4>
+            <p>Safe and efficient rootballing services, with or without fruit-bearing plants, ensuring healthy transplantation and growth.</p>
+        </div>
+
+        <div class="info-card glass-panel gs-reveal">
+            <h4>🧱 Interlock Paving</h4>
+            <p>Durable and stylish interlock paving solutions that enhance pathways, driveways, and outdoor living areas.</p>
+        </div>
+
+        <div class="info-card glass-panel gs-reveal">
+            <h4>🧼 Cleaning Services</h4>
+            <p>Comprehensive outdoor cleaning services to maintain a neat, hygienic, and visually appealing environment.</p>
+        </div>
+
+        <div class="info-card glass-panel gs-reveal">
+            <h4>🌿 Garden Design</h4>
+            <p>Creative garden designs tailored to your space, combining aesthetics with natural harmony.</p>
+        </div>
+
+        <div class="info-card glass-panel gs-reveal">
+            <h4>🌱 Landscape Architecture</h4>
+            <p>Thoughtfully planned landscape architecture that balances functionality, sustainability, and visual impact.</p>
+        </div>
+
+    </div>
+</section>
 
         <section class="section grid-2">
             <div class="glass-panel gs-reveal" style="padding: 1rem; order: 2;">
@@ -736,7 +762,7 @@
         
         <section class="section">
             <div class="section-header gs-reveal">
-                <h2>Spaces That Speak for Themselves</h2>
+                <h2>Hear from Our Customers</h2>
             </div>
             <div class="grid-auto">
                 <div class="info-card glass-panel gs-reveal" style="text-align: center; padding: 3rem 2rem;">
@@ -761,12 +787,12 @@
             </div>
             <div class="stats-grid">
                 <div class="stat-card glass-panel gs-reveal">
-                    <h3>500+</h3>
-                    <p>Trees & Plants Installed</p>
+                    <h3>100+</h3>
+                    <p>projects completed</p>
                 </div>
                 <div class="stat-card glass-panel gs-reveal">
-                    <h3>30%</h3>
-                    <p>Avg Water Savings</p>
+                    <h3>10+</h3>
+                    <p>years of service</p>
                 </div>
                 <div class="stat-card glass-panel gs-reveal">
                     <h3>100+</h3>
